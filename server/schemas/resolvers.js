@@ -1,6 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User } = require('../models');
 const { signToken } = require('../utils/auth');
+const bcrypt = require('bcrypt');
 
 const resolvers = {
   Query: {
@@ -20,6 +21,19 @@ const resolvers = {
       return { user, token }
     },
     // Login
+    login: async (_, { email, password }, context) => {
+      const user = await User.findOne({ email });
+        if (!user) {
+          throw new AuthenticationError ('No user with email found!');      
+      }
+      const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+          throw new AuthenticationError('Incorrect password!');
+      }
+      const token = signToken(user);
+      return { user, token };
+    },
+    // Save book
     
   },
 };

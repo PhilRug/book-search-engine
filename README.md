@@ -2,4 +2,4 @@
 a book search engine
 
 
-- connection.js from lesson 21-MERN mini project 
+- connection.js and server.js from lesson 21-MERN mini project 
